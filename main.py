@@ -241,6 +241,9 @@ def extract_amount(text: str):
 
 
 def main():
+    """
+    メイン処理
+    """
     OUTPUT_DIR = Path.cwd() / "output"
     OUTPUT_DIR.mkdir(exist_ok=True)
 
