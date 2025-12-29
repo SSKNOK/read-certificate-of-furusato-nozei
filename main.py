@@ -78,7 +78,7 @@ def ocr_pdf_with_tesseract(pdf_path: Path):
     """
     images = convert_from_path(
         pdf_path,
-        dpi=400,
+        dpi=800,
         poppler_path=POPPLER_PATH
     )
 
@@ -244,6 +244,8 @@ def main():
     """
     メイン処理
     """
+    logging.info("ふるさと納税寄付金証明書読み取り処理を開始します")
+
     OUTPUT_DIR = Path.cwd() / "output"
     OUTPUT_DIR.mkdir(exist_ok=True)
 
