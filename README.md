@@ -144,7 +144,10 @@ project_root/
 
 ---
 
-### 1. 実行ファイルをダウンロード
+### 1. 
+1. Python環境を構築します。
+
+2. main.pyを任意のディレクトリにdownloadします。
 
 
 ### 2. Tesseract OCR のインストール（必須）
@@ -173,6 +176,6 @@ PDF を画像に変換するために使用します。
 
 ## 実行方法
 1. input フォルダに PDF を配置します。
-2. `main.exe`をダブルクリックして実行します。
-3. output/output.csv に結果が出力されます。
-4. logs/log.log に詳細な解析ログが出力されます。
+2. `python main.py`を実行します。
+3. `output/output.csv` に結果が出力されます。
+4. `logs/log.log` に詳細な解析ログが出力されます。
