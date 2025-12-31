@@ -128,7 +128,7 @@ OCR により取得した全文テキストに対して、
 ## フォルダ構成
 
 ```text
-project_root/
+/
 ├─ input/          # 処理対象のPDFを格納
 ├─ output/
 │  └─ output.csv   # 抽出結果
@@ -144,7 +144,7 @@ project_root/
 
 ---
 
-### 1. Python環境の構築
+### 1. Python環境の構築（必須）
 1. Python3.12のインストーラーをダウンロードします。
       - https://www.python.org/downloads/windows/
   
@@ -163,19 +163,21 @@ Python はインストールされています。
 OCR処理に使用します。
 
 1. ダウンロード先（Windows）:Tesseract OCR（UB Mannheim版）からインストーラーをダウンロードします。
-     - https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe
+     - https://github.com/UB-Mannheim/tesseract/wiki
+     - - インストーラーの場所とインストーラー各画面の入力内容は下記を参照ください。
+        - https://gammasoft.jp/blog/tesseract-ocr-install-on-windows/#download
 
-2. ダウンロードした上記のインストーラーを実行します。
+2. ダウンロードした上記のインストーラーをダブルクリックで実行します。
 
-3. 実行されたインストーラーで画面を次に順次進め、インストール先のパスが`C:\Program Files\Tesseract-OCR`になっていることを確認してください。
-
-4. インストール完了後`C:\Program Files\Tesseract-OCR\tesseract.exe`のファイルがあれば完了です。
+3. インストール完了後`C:\Program Files\Tesseract-OCR\tesseract.exe`のファイルがあれば完了です。
 
 ### 3. Poppler のインストール（必須）
 PDF を画像に変換するために使用します。
 
 1. ダウンロード先（Windows）:Poppler for WindowsからZIPファイルをダウンロードします。
-     - https://github.com/oschwartz10612/poppler-windows/releases/download/v25.12.0-0/Release-25.12.0-0.zip 
+     - https://github.com/oschwartz10612/poppler-windows/releases/
+     - ダウンロードリンクの場所等は下記のSTEP1を参照ください。
+       - https://blog.nyanco.me/howto-poppler-windows11/#toc2
 
 2. `C:\poppler`というフォルダを作成します。
 
@@ -184,7 +186,7 @@ PDF を画像に変換するために使用します。
     - share
 
 ## プログラムを実行方法
-1. input フォルダに PDF を配置します。
+1. `input`フォルダに PDF を配置します。
 2. `execute.bat`を実行します。
 3. `output/output.csv` に結果が出力されます。
 4. `logs/log.log` に詳細な解析ログが出力されます。
