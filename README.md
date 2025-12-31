@@ -188,7 +188,7 @@ PDF を画像に変換するために使用します。
     - Library
     - share
 
-## プログラムを実行方法
+## プログラムをの実行方法
 1. `input`フォルダに PDF を配置します。
 2. `execute.bat`を実行します。
 3. `output/output.csv` に結果が出力されます。
