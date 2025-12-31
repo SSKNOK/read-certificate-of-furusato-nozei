@@ -144,23 +144,32 @@ project_root/
 
 ---
 
-### 1. 
-1. Python環境を構築します。
+### 1. Python環境の構築
+1. Python3.12のインストーラーをダウンロードします。
+      - https://www.python.org/downloads/windows/
+  
+2. 1でダウンロードしたインストーラーを起動してPythonをインストールします。デフォルトの設定のまま次へを押してダウンロードを行ってください。
 
-2. main.pyを任意のディレクトリにdownloadします。
+3. `confirm_python.bat`をダブルクリックで実行して下記のような表示が出ればOKです。
+```
+Python 3.12.10
+Python はインストールされています。
+```
+
+4. 次に`setup_env.bat`をダブルクリックで実行します。
 
 
 ### 2. Tesseract OCR のインストール（必須）
 OCR処理に使用します。
 
-1. ダウンロード先（Windows）:Tesseract OCR（UB Mannheim版）からEXEファイルをダウンロードします。
+1. ダウンロード先（Windows）:Tesseract OCR（UB Mannheim版）からインストーラーをダウンロードします。
      - https://github.com/tesseract-ocr/tesseract/releases/download/5.5.0/tesseract-ocr-w64-setup-5.5.0.20241111.exe
 
-2. ダウンロードした上記のEXEを実行します。
+2. ダウンロードした上記のインストーラーを実行します。
 
-3. 実行されたEXEで画面を次に順次進め、インストール先のパスが`C:\Program Files\Tesseract-OCR`になっていることを確認してください。
+3. 実行されたインストーラーで画面を次に順次進め、インストール先のパスが`C:\Program Files\Tesseract-OCR`になっていることを確認してください。
 
-4. EXEでのインストール完了後`C:\Program Files\Tesseract-OCR\tesseract.exe`のファイルがあれば完了です。
+4. インストール完了後`C:\Program Files\Tesseract-OCR\tesseract.exe`のファイルがあれば完了です。
 
 ### 3. Poppler のインストール（必須）
 PDF を画像に変換するために使用します。
@@ -174,8 +183,8 @@ PDF を画像に変換するために使用します。
     - Library
     - share
 
-## 実行方法
+## プログラムを実行方法
 1. input フォルダに PDF を配置します。
-2. `python main.py`を実行します。
+2. `execute.bat`を実行します。
 3. `output/output.csv` に結果が出力されます。
 4. `logs/log.log` に詳細な解析ログが出力されます。
