@@ -274,7 +274,7 @@ def main():
         logging.warning("inputフォルダにPDFがありません")
         return
 
-    with open(output_csv, "w", newline="", encoding="utf-8-sig") as f:
+    with open(output_csv, "w", newline="", encoding="shift_jis") as f:
         writer = csv.writer(f)
         writer.writerow(["ファイル名", "ページ数", "日付", "市区町村名", "金額"])
 
