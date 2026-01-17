@@ -59,6 +59,17 @@ CITY_PATTERN = re.compile(
     r'[\S]*?(?:市|区|町|村)'
 )
 
+# 都道府県削除用
+PREF_PATTERN = re.compile(
+    r'^(北海道|青森県|岩手県|宮城県|秋田県|山形県|福島県|'
+    r'茨城県|栃木県|群馬県|埼玉県|千葉県|東京都|神奈川県|'
+    r'新潟県|富山県|石川県|福井県|山梨県|長野県|岐阜県|静岡県|愛知県|'
+    r'三重県|滋賀県|京都府|大阪府|兵庫県|奈良県|和歌山県|'
+    r'鳥取県|島根県|岡山県|広島県|山口県|徳島県|香川県|愛媛県|高知県|'
+    r'福岡県|佐賀県|長崎県|熊本県|大分県|宮崎県|鹿児島県|沖縄県)'
+)
+
+
 def preprocess_image(pil_image):
     """OCR精度向上のための画像前処理"""
     img = np.array(pil_image)
@@ -156,20 +167,25 @@ def extract_city(text: str):
     cities_ginza_unique = list(dict.fromkeys(cities_ginza_all))
 
     if len(cities_regex) >= 2:
-        return [cities_regex[1]]
+        city = PREF_PATTERN.sub("", cities_regex[1])
+        return [city]
 
     if len(cities_ginza_unique) >= 2:
-        return [cities_ginza_unique[1]]
+        city = PREF_PATTERN.sub("", cities_ginza_unique[1])
+        return [city]
 
     if len(cities_ginza_all) >= 2:
         most_common_city, _ = Counter(cities_ginza_all).most_common(1)[0]
-        return [most_common_city]
+        city = PREF_PATTERN.sub("", most_common_city)
+        return [city]
 
     if len(cities_regex) == 1:
-        return [cities_regex[0]]
+        city = PREF_PATTERN.sub("", cities_regex[0])
+        return [city]
 
     if len(cities_ginza_unique) == 1:
-        return [cities_ginza_unique[0]]
+        city = PREF_PATTERN.sub("", cities_ginza_unique[0])
+        return [city]
 
     return []
 
@@ -177,7 +193,7 @@ def extract_city(text: str):
 
 def extract_date(text: str):
     """
-    日付抽出
+    日付抽出（和暦 → 西暦変換）
 
     GiNZAの固有表現認識（NER）を用いて日付を取得
     補助的に正規表現で「令和○年○月○日」形式の日付も抽出
@@ -202,9 +218,10 @@ def extract_date(text: str):
         if not match:
             continue
 
-        y = int(match.group(1))
+        ry = int(match.group(1))
         m = int(match.group(2))
         d = int(match.group(3)) if match.group(3) else 1
+        y = 2018 + ry  #  西暦変換
 
         if re.search(rf'平成\s*{y}\s*年', text_clean):
             continue
@@ -212,11 +229,12 @@ def extract_date(text: str):
         if not re.search(rf'令和\s*{y}\s*年', text_clean):
             continue
 
-        candidates.append((100 * m + d, f"令和{y}年{m}月{d}日"))
+        candidates.append((100 * m + d, f"{y:04d}/{m:02d}/{d:02d}"))
 
     for match in re.finditer(r'令和\s*(\d+)年(\d+)月(\d+)?日?', text_clean):
-        y, m, d = int(match.group(1)), int(match.group(2)), int(match.group(3) or 1)
-        candidates.append((100 * m + d, f"令和{y}年{m}月{d}日"))
+        ry, m, d = int(match.group(1)), int(match.group(2)), int(match.group(3) or 1)
+        y = 2018 + ry
+        candidates.append((100 * m + d, f"{y:04d}/{m:02d}/{d:02d}"))
 
     if not candidates:
         return []
