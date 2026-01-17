@@ -276,7 +276,7 @@ def main():
 
     with open(output_csv, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
-        writer.writerow(["ファイル名", "ページ数", "市区町村名", "日付", "金額"])
+        writer.writerow(["ファイル名", "ページ数", "日付", "市区町村名", "金額"])
 
         for pdf_file in pdf_files:
             logging.info(f"========= 処理開始: {pdf_file.name} =========")
@@ -298,8 +298,8 @@ def main():
                 writer.writerow([
                     pdf_file.name,
                     page_no,
-                    cities[0] if cities else "",
                     dates[0] if dates else "",
+                    cities[0] if cities else "",
                     amounts[0] if amounts else ""
                 ])
 
