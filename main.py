@@ -229,12 +229,12 @@ def extract_date(text: str):
         if not re.search(rf'令和\s*{y}\s*年', text_clean):
             continue
 
-        candidates.append((100 * m + d, f"{y:04d}/{m:02d}/{d:02d}"))
+        candidates.append((100 * m + d, f"{y}/{m}/{d}"))
 
     for match in re.finditer(r'令和\s*(\d+)年(\d+)月(\d+)?日?', text_clean):
         ry, m, d = int(match.group(1)), int(match.group(2)), int(match.group(3) or 1)
         y = 2018 + ry
-        candidates.append((100 * m + d, f"{y:04d}/{m:02d}/{d:02d}"))
+        candidates.append((100 * m + d, f"{y}/{m}/{d}"))
 
     if not candidates:
         return []
