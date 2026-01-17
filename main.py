@@ -45,7 +45,7 @@ INPUT_DIR = Path(__file__).parent / "input"
 
 # 金額抽出用 正規表現
 AMOUNT_PATTERN = re.compile(
-    r'(?:寄附金額|合計金額|金額|請求額|金)?\s*[¥￥]?\s*([\d,]+)\s*円'
+     r'(?:寄附金額|合計金額|金額|請求額|金)?\s*[¥￥]?\s*([\d,._．。、\s]+)\s*円'
 )
 
 # 市区町村抽出用 正規表現（都道府県＋市区町村）
@@ -252,7 +252,9 @@ def extract_amount(text: str):
     """
     logging.debug("---- 寄付金額抽出　開始 ----")
     for match in AMOUNT_PATTERN.finditer(text):
-        amount = match.group(1).replace(",", "")
+        amount_raw = match.group(1)
+        # 区切り文字をすべて削除
+        amount = re.sub(r'[,\._．。、\s]', '', amount_raw)
         return [amount]
     return []
 
