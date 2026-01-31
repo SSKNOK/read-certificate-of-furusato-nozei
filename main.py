@@ -278,7 +278,7 @@ def main():
 
     with open(output_csv, "w", newline="", encoding="shift_jis") as f:
         writer = csv.writer(f)
-        writer.writerow(["ファイル名", "ページ数", "日付", "市区町村名", "金額"])
+        writer.writerow(["ファイル名", "ページ数", "日付（月日）", "日付（年月日）", "市区町村名", "金額"])
 
         for pdf_file in pdf_files:
             logging.info(f"========= 処理開始: {pdf_file.name} =========")
@@ -297,10 +297,23 @@ def main():
                 dates = extract_date(text)
                 amounts = extract_amount(text)
 
+                # 日付をyyyy/m/dとm/dの2形式作成
+                date_full = dates[0] if dates else ""
+                date_md = ""
+
+                if date_full:
+                    parts = date_full.split("/")
+                    if len(parts) == 3:
+                        _, m, d = parts
+                        date_md = f"{int(m)}/{int(d)}"  # ← m/d形式
+                    else:
+                        date_md = ""
+
                 writer.writerow([
                     pdf_file.name,
                     page_no,
-                    dates[0] if dates else "",
+                    date_md,
+                    date_full,
                     cities[0] if cities else "",
                     amounts[0] if amounts else ""
                 ])
