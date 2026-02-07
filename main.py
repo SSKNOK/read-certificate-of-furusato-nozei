@@ -44,8 +44,11 @@ nlp = spacy.load("ja_ginza")
 INPUT_DIR = Path(__file__).parent / "input"
 
 # 金額抽出用 正規表現
-AMOUNT_PATTERN = re.compile(
+AMOUNT_PATTERN_WITH_YEN = re.compile(
      r'(?:寄附金額|合計金額|金額|請求額|金)?\s*[¥￥]?\s*([\d,._．。、\s]+)\s*円'
+)
+AMOUNT_PATTERN_WITHOUT_YEN = re.compile(
+     r'(?:寄附金額|合計金額|金額|請求額|金)?\s*[¥￥]?\s*([\d,._．。、\s]+)'
 )
 
 # 市区町村抽出用 正規表現（都道府県＋市区町村）
@@ -76,7 +79,6 @@ def preprocess_image(pil_image):
 
     # グレースケール化
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-
     return Image.fromarray(gray)
 
 
@@ -136,6 +138,20 @@ def print_ginza_result(text: str):
     doc = nlp(text)
     for ent in doc.ents:
         logging.debug(f"[{ent.label_}] {ent.text}")
+
+
+
+def get_city_name(text: str) :
+    """
+    自治体名の候補から都道府県名と郡を取り除く
+    
+    :param text: Description
+    :type text: str
+    """
+    text = PREF_PATTERN.sub("", text)
+    text = re.sub(r'.*郡', '', text)
+
+    return text
 
 
 
@@ -251,10 +267,17 @@ def extract_amount(text: str):
     正規表現で金額を抽出
     """
     logging.debug("---- 寄付金額抽出　開始 ----")
-    for match in AMOUNT_PATTERN.finditer(text):
+    for match in AMOUNT_PATTERN_WITH_YEN.finditer(text):
         amount_raw = match.group(1)
         # 区切り文字をすべて削除
         amount = re.sub(r'[,\._．。、\s]', '', amount_raw)
+        logging.debug(f"円付き金額検出: {amount}")
+        return [amount]
+    
+    for match in AMOUNT_PATTERN_WITHOUT_YEN.finditer(text):
+        amount_raw = match.group(1)
+        amount = re.sub(r'[,\._．。、\s]', '', amount_raw)
+        logging.debug(f"円なし金額検出: {amount}")
         return [amount]
     return []
 
